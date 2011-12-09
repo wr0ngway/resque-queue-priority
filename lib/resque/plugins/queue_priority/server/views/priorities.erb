@@ -1,0 +1,65 @@
+<h1>Dynamic Queues</h1>
+<p class="intro">
+  The list below orders queue name patterns by the priority you wish them to be executed in.  The "Fairly" option allows you to indicate you want the queues within that pattern space be selected in a fair (random) manner, i.e. like resque-fairly.
+</p>
+
+<form action="/queuepriority" method="POST" style="float:none; margin-top:10px">
+
+  <table class="priorities">
+    <tr>
+      <th>Pattern</th>
+      <th>Fairly</th>
+      <th></th>
+    </tr>
+    <% @priorities.each_with_index do |priority, i| %>
+      <tr class="line">
+        <td><input type="text" id="input-<%= i %>-pattern" name="priorities[][pattern]" value="<%= priority["pattern"] %>" /></td>
+        <td><input type="checkbox" id="input-<%= i %>-fairly" name="priorities[][fairly]" value="true" <%= "checked" if priority["fairly"] %> /></td>
+        <td>
+          <a href="#up" class="up">Up</a> |
+          <a href="#down" class="down">Down</a> |
+          <a href="#remove" class="remove">Remove</a>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <a href="#add" class="add">Add</a>
+  <input type="submit" value="Save"/>
+
+</form>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery(function($) {
+
+    $("a.add").click(function(e) {
+      e.preventDefault();
+      var $table = $("table.priorities");
+      var $newRow = $table.find("tr.line:first").clone();
+      $newRow.find("input[type=text]").attr("value", "");
+      $newRow.find("input[type=checkbox]").attr("checked", false);
+      $newRow.appendTo($table);
+    });
+
+    $("a.remove").click(function(e) {
+      e.preventDefault();
+      var $link = $(this);
+      $link.parents("tr").remove();
+    });
+
+    $("a.up").click(function(e) {
+      e.preventDefault();
+      var $link = $(this);
+      var $row = $link.parents("tr");
+      $row.prev(".line").before($row);
+    });
+
+    $("a.down").click(function(e) {
+      e.preventDefault();
+      var $link = $(this);
+      var $row = $link.parents("tr");
+      $row.next(".line").after($row);
+    });
+
+  });
+</script>
