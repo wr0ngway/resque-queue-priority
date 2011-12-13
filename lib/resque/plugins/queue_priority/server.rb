@@ -12,7 +12,7 @@ module Resque
 
           app.get "/queuepriority" do
             @priorities = Resque.priority_buckets
-            plugin_view :priorities
+            queuepriority_view :priorities
           end
 
           app.post "/queuepriority" do
@@ -22,7 +22,7 @@ module Resque
           end
 
           app.helpers do
-            def plugin_view(filename, options = {}, locals = {})
+            def queuepriority_view(filename, options = {}, locals = {})
               erb(File.read(File.join(::Resque::Plugins::QueuePriority::Server::VIEW_PATH, "#{filename}.erb")), options, locals)
             end
           end
