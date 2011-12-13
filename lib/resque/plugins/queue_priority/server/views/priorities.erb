@@ -3,7 +3,7 @@
   The list below orders queue name patterns by the priority you wish them to be executed in.  The "Fairly" option allows you to indicate you want the queues within that pattern space be selected in a fair (random) manner, i.e. like resque-fairly.  The 'default' pattern must always exist, and matches against all queues that aren't in any of the other patterns.
 </p>
 
-<form action="/queuepriority" method="POST" style="float:none; margin-top:10px">
+<form action="<%= url(:queuepriority) %>" method="POST" style="float:none; margin-top:10px">
 
   <table class="priorities">
     <tr>
@@ -30,35 +30,46 @@
 </form>
 
 <script type="text/javascript" charset="utf-8">
+  function markDirty()
+  {
+    $("input[type=submit]").css({border:"3px orange solid"});
+  }
+    
   jQuery(function($) {
-
-    $("a.add").click(function(e) {
+    $("input").live("keypress", markDirty);
+    $("input[type=checkbox]").live("click", markDirty);
+    
+    $("a.add").live("click", function(e) {
       e.preventDefault();
       var $table = $("table.priorities");
       var $newRow = $table.find("tr.line:first").clone();
       $newRow.find("input[type=text]").attr("value", "");
       $newRow.find("input[type=checkbox]").attr("checked", false);
       $newRow.appendTo($table);
+      markDirty();
     });
 
-    $("a.remove").click(function(e) {
+    $("a.remove").live("click", function(e) {
       e.preventDefault();
       var $link = $(this);
       $link.parents("tr").remove();
+      markDirty();
     });
 
-    $("a.up").click(function(e) {
+    $("a.up").live("click", function(e) {
       e.preventDefault();
       var $link = $(this);
       var $row = $link.parents("tr");
       $row.prev(".line").before($row);
+      markDirty();
     });
 
-    $("a.down").click(function(e) {
+    $("a.down").live("click", function(e) {
       e.preventDefault();
       var $link = $(this);
       var $row = $link.parents("tr");
       $row.next(".line").after($row);
+      markDirty();
     });
 
   });
