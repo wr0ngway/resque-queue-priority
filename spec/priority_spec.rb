@@ -112,6 +112,34 @@ describe "Queue Priority" do
       worker.queues.should == ["high_x", "high_y", "foo", "superhigh_z"]
     end
 
+    it "should prioritize simple wildcard pattern with correct matching" do
+      Resque.priority_buckets = [{'pattern' => '*high*', 'fairly' => false},
+                                 {'pattern' => 'default', 'fairly' => false}]
+      worker = Resque::Worker.new("*")
+      worker.queues.should == ["high_x", "high_y", "superhigh_z", "foo"]
+    end
+    
+    it "should prioritize negation patterns" do
+      Resque.priority_buckets = [{'pattern' => 'high*,!high_x', 'fairly' => false},
+                                 {'pattern' => 'default', 'fairly' => false}]
+      worker = Resque::Worker.new("*")
+      worker.queues.should == ["high_y", "foo", "high_x", "superhigh_z"]
+    end
+
+    it "should not be affected by standalone negation patterns" do
+      Resque.priority_buckets = [{'pattern' => '!high_x', 'fairly' => false},
+                                 {'pattern' => 'default', 'fairly' => false}]
+      worker = Resque::Worker.new("*")
+      worker.queues.should == ["foo", "high_x", "high_y", "superhigh_z"]
+    end
+
+    it "should allow multiple inclusive patterns" do
+      Resque.priority_buckets = [{'pattern' => 'high_x, superhigh*', 'fairly' => false},
+                                 {'pattern' => 'default', 'fairly' => false}]
+      worker = Resque::Worker.new("*")
+      worker.queues.should == ["high_x", "superhigh_z", "foo", "high_y"]
+    end
+
     it "should prioritize fully inclusive wildcard pattern" do
       Resque.priority_buckets = [{'pattern' => '*high*', 'fairly' => false},
                                  {'pattern' => 'default', 'fairly' => false}]

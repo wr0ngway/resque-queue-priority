@@ -31,14 +31,35 @@ module Resque
               next
             end
 
-            patstr = bucket_pattern.gsub(/\*/, ".*")
-            pattern = /^#{patstr}$/
-            bucket_queues, remaining = all_queues.partition {|q| q =~ pattern }
-
+            bucket_queues, remaining = [], []
+            
+            patterns = bucket_pattern.split(',')
+            patterns.each do |pattern|
+              pattern = pattern.strip
+              
+              if pattern[0] == '!'
+                negated = true
+                pattern = pattern[1..-1]
+              end
+              
+              patstr = pattern.gsub(/\*/, ".*")
+              pattern = /^#{patstr}$/
+            
+            
+              if negated
+                bucket_queues -= bucket_queues.grep(pattern)
+              else
+                bucket_queues.concat(all_queues.grep(pattern))
+              end
+            
+            end
+            
+            bucket_queues.uniq!
             bucket_queues.shuffle! if fairly
-            all_queues = remaining
-
+            all_queues = all_queues - bucket_queues
+            
             result << bucket_queues
+            
           end
 
           # insert the remaining queues at the position the default item was at (or last)
