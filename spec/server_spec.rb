@@ -5,6 +5,7 @@ require 'rack'
 require 'rack/test'
 require 'resque/server'
 require 'resque-queue-priority-server'
+require 'orderedhash'
 
 Sinatra::Base.set :environment, :test
 # ::Test::Unit::TestCase.send :include, Rack::Test::Methods
@@ -102,9 +103,12 @@ describe "Queue Priority pages" do
     it "should update queues" do
       Resque.priority_buckets.should == [{'pattern' => 'default'}]
 
-      post "/queuepriority", {'priorities' => [{"pattern" => "foo"},
-                                              {"pattern" => "default"},
-                                              {"pattern" => "bar", "fairly" => "true"}]}
+      params = {'priorities' => [
+          OrderedHash["pattern", "foo"],
+          OrderedHash["pattern", "default"],
+          OrderedHash["pattern", "bar", "fairly", "true"]
+      ]}
+      post "/queuepriority", params 
 
       last_response.should be_redirect
       last_response['Location'].should match /queuepriority/

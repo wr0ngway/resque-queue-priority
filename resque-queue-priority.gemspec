@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
 
   # Needed for testing newer resque on ruby 1.8.7
   s.add_development_dependency('json')
+  # Needed for correct ordering when passing hash params to rack-test
+  s.add_development_dependency('orderedhash')
 
 end
 
