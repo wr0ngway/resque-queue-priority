@@ -84,10 +84,12 @@ describe "Queue Priority" do
     end
 
     it "should pick up all queues fairly" do
+      # do a bunch to reduce likyhood of random match causing test failure
+      50.times {|i| Resque.watch_queue("auto_#{i}") }
       Resque.priority_buckets = [{'pattern' => 'default', 'fairly' => true}]
       worker = Resque::Worker.new("*")
-      worker.queues.should_not == ["foo", "high_x", "high_y", "superhigh_z"]
-      worker.queues.sort.should == ["foo", "high_x", "high_y", "superhigh_z"]
+      worker.queues.should_not == Resque.queues.sort
+      worker.queues.sort.should == Resque.queues.sort
     end
 
     it "should prioritize simple pattern" do
