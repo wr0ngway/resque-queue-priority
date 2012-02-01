@@ -37,8 +37,7 @@ module Resque
             patterns.each do |pattern|
               pattern = pattern.strip
               
-              # string[0] in 1.8.7 is different than in 1.9 so use .chars.first 
-              if pattern.chars.first == '!'
+              if pattern =~ /^!/
                 negated = true
                 pattern = pattern[1..-1]
               end
