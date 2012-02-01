@@ -21,9 +21,13 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency("resque", '~> 1.10')
+  
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 2.5')
   s.add_development_dependency('rack-test', '~> 0.5.4')
+
+  # Needed for testing newer resque on ruby 1.8.7
+  s.add_development_dependency('json')
 
 end
 
