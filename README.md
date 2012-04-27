@@ -2,6 +2,8 @@ A resque plugin for specifying the order a worker will prioritize queues in.
 
 Authored against Resque 1.17.1, so it at least works with that - try running the tests if you use a different version of resque
 
+[![Build Status](https://secure.travis-ci.org/wr0ngway/resque-queue-priority.png)](http://travis-ci.org/wr0ngway/resque-queue-priority)
+
 Usage:
 
 Start your workers with a QUEUE that contains many queue names - this plugin is most useful when using '\*' or a plugin like resque-dynamic-queues.
