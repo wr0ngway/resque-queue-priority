@@ -97,7 +97,7 @@ describe "Queue Priority pages" do
     it "should have form to edit queues" do
       get "/queuepriority"
 
-      last_response.body.should match /<form action="\/queuepriority"/
+      last_response.body.should match /<form action=".*?\/queuepriority"/
     end
 
     it "should update queues" do
@@ -108,7 +108,7 @@ describe "Queue Priority pages" do
           OrderedHash["pattern", "default"],
           OrderedHash["pattern", "bar", "fairly", "true"]
       ]}
-      post "/queuepriority", params 
+      post "/queuepriority", params
 
       last_response.should be_redirect
       last_response['Location'].should match /queuepriority/
