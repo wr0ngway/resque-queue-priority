@@ -18,7 +18,7 @@ module Resque
           app.post "/queuepriority" do
             priorities = params['priorities']
             Resque.priority_buckets = priorities
-            redirect "/queuepriority"
+            redirect to("/queuepriority")
           end
 
           app.helpers do
