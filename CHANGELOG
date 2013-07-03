@@ -1,3 +1,20 @@
+0.6.2 (07/03/2013)
+------------------
+
+Merge pull request #2 from coudron/relative_paths <05bb578> [Matt Conway]
+Use url helper for forms and redirects to avoid routing errors when Resque is not mounted at the root. <d57dd85> [Chris Mason]
+cleaner fix of negation detection <ea7b08b> [Matt Conway]
+disable rbx19 <facf695> [Matt Conway]
+fix for 1.8.7 <94c4804> [Matt Conway]
+fix test dependency for 1.8.7 <4ba7434> [Matt Conway]
+fix test for 1.8 <018658a> [Matt Conway]
+license <238eb80> [Matt Conway]
+only auto start/stop redis if not on CI <4077cf1> [Matt Conway]
+reduce intermittent failure <e20bdbf> [Matt Conway]
+setup travis ci <7e5a153> [Matt Conway]
+travis status <a260cf4> [Matt Conway]
+use relative urls in web ui <75ae7c7> [Matt Conway]
+
 0.6.0
 -----
 
