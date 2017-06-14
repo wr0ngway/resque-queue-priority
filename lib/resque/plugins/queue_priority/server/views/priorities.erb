@@ -36,10 +36,10 @@
   }
 
   jQuery(function($) {
-    $("input").live("keypress", markDirty);
-    $("input[type=checkbox]").live("click", markDirty);
+    $("body").on("keypress", "input", markDirty);
+    $("body").on("click", "input[type=checkbox]", markDirty);
 
-    $("a.add").live("click", function(e) {
+    $("body").on("click", "a.add", function(e) {
       e.preventDefault();
       var $table = $("table.priorities");
       var $newRow = $table.find("tr.line:first").clone();
@@ -49,14 +49,14 @@
       markDirty();
     });
 
-    $("a.remove").live("click", function(e) {
+    $("body").on("click", "a.remove", function(e) {
       e.preventDefault();
       var $link = $(this);
       $link.parents("tr").remove();
       markDirty();
     });
 
-    $("a.up").live("click", function(e) {
+    $("body").on("click", "a.up", function(e) {
       e.preventDefault();
       var $link = $(this);
       var $row = $link.parents("tr");
@@ -64,7 +64,7 @@
       markDirty();
     });
 
-    $("a.down").live("click", function(e) {
+    $("body").on("click", "a.down", function(e) {
       e.preventDefault();
       var $link = $(this);
       var $row = $link.parents("tr");
